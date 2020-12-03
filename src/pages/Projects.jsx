@@ -24,24 +24,24 @@ function Projects({ location }) {
   useEffect(() => {
     setAppState({ isLoading: true, error: false });
     fetch(Data, {
-        mode: 'no-cors',
-        headers: {
-        accept: "application/vnd.api+json"
+      mode: "no-cors",
+      headers: {
+        accept: "application/vnd.api+json",
       },
     })
-    .then((res) => res.json(
-      console.log(res)
-    ))
-    .then((data) => {
-      setAppState({
+      .then((res) => {
+        console.log(res);
+      })
+      .then((data) => {
+        setAppState({
           isLoading: false,
-          projects: data.data
+          projects: data.data,
         });
-    })
-    .catch((error) => {
-      setAppState({ isLoading: false, error: true});
-      console.log("Error: " + error);
-    });
+      })
+      .catch((error) => {
+        setAppState({ isLoading: false, error: true });
+        console.log("Error: " + error);
+      });
   }, [setAppState]);
 
   return (
@@ -50,26 +50,20 @@ function Projects({ location }) {
         <title>{t("title")}</title>
         <meta name="description" content={t("meta.description")} />
       </Helmet>
-      <Header>
-        {t("title")}
-      </Header>
+      <Header>{t("title")}</Header>
       <Main>
-        {!appState.loading && !appState.error && (
-
-            <ListLoading
-              isLoading={appState.isLoading}
-              projects={appState.projects}
-            />
-
+        {!appState.isLoading && !appState.error && (
+          <ListLoading
+            isLoading={appState.isLoading}
+            projects={appState.projects}
+          />
         )}
         {appState.isLoading && (
           <Alert variant="indigo">{t("alert.loadingData")}</Alert>
         )}
         {appState.error && <Alert variant="red">{t("alert.error")}</Alert>}
       </Main>
-      <Footer>
-        {t('footer.description')}
-      </Footer>
+      <Footer>{t("footer.description")}</Footer>
     </Layout>
   );
 }
