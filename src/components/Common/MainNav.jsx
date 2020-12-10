@@ -1,5 +1,5 @@
 import React from "react";
-import { NavLink } from 'react-router-dom';
+import { NavLink } from "react-router-dom";
 import { useTranslate } from "react-translate";
 import Logo from "./Logo.svg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -9,18 +9,24 @@ function MainNav({ active }) {
   const t = useTranslate("common");
 
   function Nav(props) {
-    const content = props.navItems.map((item) =>
-      <NavLink key={item.id} to={item.path} href={item.path} exact={true}  className="px-3 py-2 rounded-md text-sm font-medium text-gray-300 mr-3 hover:text-white hover:bg-gray-700" activeClassName="text-white bg-gray-900">{item.title}</NavLink>
-    );
-    return (
-      <div>
-        {content}
-      </div>
-    );
+    const content = props.navItems.map((item) => (
+      <NavLink
+        key={item.id}
+        to={item.path}
+        href={item.path}
+        exact={true}
+        className="px-3 py-2 rounded-md text-sm font-medium text-gray-300 mr-3 hover:text-white hover:bg-gray-700"
+        activeClassName="text-white bg-gray-900"
+      >
+        {item.title}
+      </NavLink>
+    ));
+    return <div>{content}</div>;
   }
   const navItems = [
-    {id: 1, title: t('nav.home'), path: '/'},
-    {id: 2, title: t('nav.projects'), path: 'projects'}
+    { id: 1, title: t("nav.home"), path: "/" },
+    { id: 2, title: t("nav.projects"), path: "projects" },
+    { id: 3, title: t("nav.chart"), path: "chart" },
   ];
 
   return (
@@ -39,7 +45,7 @@ function MainNav({ active }) {
           </div>
           <div className="-mr-2 flex md:hidden">
             <button className="bg-gray-800 inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
-              <span className="sr-only">{t('nav.open')}</span>
+              <span className="sr-only">{t("nav.open")}</span>
               <FontAwesomeIcon icon={faBars} className="block h-6 w-6" />
               <FontAwesomeIcon icon={faTimes} className="hidden h-6 w-6" />
             </button>
