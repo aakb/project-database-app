@@ -3,7 +3,6 @@ import Layout from "../components/Layout/Layout";
 import { Helmet } from "react-helmet";
 import Header from "../components/Header/Header";
 import Main from "../components/Main/Main";
-import Footer from "../components/Footer/Footer";
 import Alert from "../components/Alert/Alert";
 import List from "../components/Common/List";
 import WithListLoading from "../components/Common/WithListLoading";
@@ -18,24 +17,21 @@ function Projects({ location }) {
   const [appState, setAppState] = useState({
     isLoading: false,
     error: false,
-    projects: [],
+    jsonData: [],
   });
 
   useEffect(() => {
     setAppState({ isLoading: true, error: false });
     fetch(Data, {
-      mode: "no-cors",
       headers: {
         accept: "application/vnd.api+json",
       },
     })
-      .then((res) => {
-        console.log(res);
-      })
+      .then((res) => res.json())
       .then((data) => {
         setAppState({
           isLoading: false,
-          projects: data.data,
+          jsonData: data,
         });
       })
       .catch((error) => {
@@ -55,7 +51,7 @@ function Projects({ location }) {
         {!appState.isLoading && !appState.error && (
           <ListLoading
             isLoading={appState.isLoading}
-            projects={appState.projects}
+            projects={appState.jsonData.data}
           />
         )}
         {appState.isLoading && (
@@ -63,7 +59,6 @@ function Projects({ location }) {
         )}
         {appState.error && <Alert variant="red">{t("alert.error")}</Alert>}
       </Main>
-      <Footer>{t("footer.description")}</Footer>
     </Layout>
   );
 }

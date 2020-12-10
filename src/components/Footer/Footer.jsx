@@ -1,11 +1,13 @@
-import React from 'react';
+import React from "react";
+import { useTranslate } from "react-translate";
 
-function Footer({ children }) {
+function Footer() {
+  const t = useTranslate("common");
 
   return (
-    <footer className="bg-gray-50">
+    <footer className="bg-gray-800 text-white">
       <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-        { children }
+        {t("footer.description")}
       </div>
     </footer>
   );

@@ -3,10 +3,14 @@ import Layout from "../components/Layout/Layout";
 import { Helmet } from "react-helmet";
 import Header from "../components/Header/Header";
 import Main from "../components/Main/Main";
-import Footer from "../components/Footer/Footer";
 import { useTranslate } from "react-translate";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGlobe, faBoxes, faBolt, faParachuteBox } from "@fortawesome/free-solid-svg-icons";
+import {
+  faGlobe,
+  faBoxes,
+  faBolt,
+  faParachuteBox,
+} from "@fortawesome/free-solid-svg-icons";
 
 function Home({ location }) {
   const t = useTranslate("home");
@@ -17,14 +21,14 @@ function Home({ location }) {
         <title>{t("title")}</title>
         <meta name="description" content={t("meta.description")} />
       </Helmet>
-      <Header>
-        {t("title")}
-      </Header>
+      <Header>{t("title")}</Header>
       <Main>
         <div className="py-12 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="lg:text-center">
-              <h2 className="text-base text-indigo-600 font-semibold tracking-wide uppercase">{t("intro.h2")}</h2>
+              <h2 className="text-base text-indigo-600 font-semibold tracking-wide uppercase">
+                {t("intro.h2")}
+              </h2>
               <p className="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
                 {t("intro.title")}
               </p>
@@ -86,7 +90,10 @@ function Home({ location }) {
                 <div className="flex">
                   <div className="flex-shrink-0">
                     <div className="flex items-center justify-center h-12 w-12 rounded-md bg-indigo-500 text-white">
-                      <FontAwesomeIcon icon={faParachuteBox} className="text-white" />
+                      <FontAwesomeIcon
+                        icon={faParachuteBox}
+                        className="text-white"
+                      />
                     </div>
                   </div>
                   <div className="ml-4">
@@ -102,11 +109,7 @@ function Home({ location }) {
             </div>
           </div>
         </div>
-
       </Main>
-      <Footer>
-        {t('footer.description')}
-      </Footer>
     </Layout>
   );
 }
