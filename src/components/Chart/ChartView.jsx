@@ -1,20 +1,16 @@
 import React, { useState, useEffect } from "react";
-import Layout from "../components/Layout/Layout";
-import { Helmet } from "react-helmet";
-import Header from "../components/Header/Header";
-import Main from "../components/Main/Main";
-import Alert from "../components/Alert/Alert";
-import List from "../components/Common/List";
-import WithListLoading from "../components/Common/WithListLoading";
+import Alert from "../Alert/Alert";
+import SunburstChart from "./SunburstChart";
+import "./ChartView.css";
 import { useTranslate } from "react-translate";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+
 const Data =
   "http://project-database.local.itkdev.dk/jsonapi/node/initiative?include=organizational_anchoring";
 
-function Projects({ location }) {
-  const t = useTranslate("projects");
-
-  // Get data from API with fetch()
-  const ListLoading = WithListLoading(List);
+function ChartView() {
+  const t = useTranslate("chart");
   const [appState, setAppState] = useState({
     isLoading: true,
     error: false,
@@ -42,26 +38,23 @@ function Projects({ location }) {
   }, [setAppState]);
 
   return (
-    <Layout location={location}>
-      <Helmet>
-        <title>{t("title")}</title>
-        <meta name="description" content={t("meta.description")} />
-      </Helmet>
-      <Header>{t("title")}</Header>
-      <Main>
+    <div className="chart">
+      <header className="chart-container">
         {!appState.isLoading && !appState.error && (
-          <ListLoading
-            isLoading={appState.isLoading}
+          <SunburstChart
+            chartId="chart"
             jsonData={appState.jsonData}
+            categoryLabel="item"
+            valueLabel="count"
           />
         )}
         {appState.isLoading && (
-          <Alert variant="indigo">{t("alert.loadingData")}</Alert>
+          <FontAwesomeIcon icon={faSpinner} size="lg" spin />
         )}
         {appState.error && <Alert variant="red">{t("alert.error")}</Alert>}
-      </Main>
-    </Layout>
+      </header>
+    </div>
   );
 }
 
-export default Projects;
+export default ChartView;
