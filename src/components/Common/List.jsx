@@ -6,29 +6,24 @@ import { Link } from "react-router-dom/cjs/react-router-dom.min";
 const List = ({ jsonData }) => {
   const t = useTranslate("common");
 
-  const { data, included } = jsonData;
+  const { data: projects, included: includedProjects } = jsonData;
 
   const listData = [];
   let listDataOrganization = [];
 
-  for (let i = 0; i < data.length; i++) {
-    for (let d = 0; d < included.length; d++) {
-      if (
-        data[i].relationships.organizational_anchoring.data.id ===
-        included[d].id
-      ) {
-        listDataOrganization = included[d].attributes.name;
+  projects.forEach(project => {
+    includedProjects.forEach(includedProject => {
+      const projectId = project.relationships?.organizational_anchoring?.data?.id;
+      if (projectId === includedProject.id) {
+        listDataOrganization = includedProject.attributes.name;
       }
-    }
-    listData.push({
-      id: data[i].id,
-      name: data[i].attributes.title,
-      org: listDataOrganization,
-      // status: data[i].attributes.status_additional.value
-      //   ? data[i].attributes.status_additional.value
-      //   : "",
     });
-  }
+    listData.push({
+      id: project.id,
+      name: project.attributes.title,
+      org: listDataOrganization,
+    });
+  });
 
   if (!listData || listData.length === 0)
     return <p>{t("No projects, sorry")}</p>;
@@ -77,22 +72,6 @@ const List = ({ jsonData }) => {
                     </div>
                   </div>
                 </td>
-                {/* <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm text-gray-900">
-                          Regional Paradigm Technician
-                        </div>
-                        <div className="text-sm text-gray-500">
-                          Optimization
-                        </div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                          Active
-                        </span>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        Admin
-                      </td> */}
                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                   <Link
                     to="#"

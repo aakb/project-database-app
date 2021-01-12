@@ -7,33 +7,28 @@ function SunburstChart({ chartId, jsonData, categoryLabel, valueLabel }) {
   const chart = useRef(null);
 
   useEffect(() => {
-    const { data, included } = jsonData;
-
+    const { data: projects, included: includedProjects } = jsonData;
     let sun = am4core.create(chartId, am4plugins_sunburst.Sunburst);
 
     const chartData = [];
     let chartDataChildren = [];
-
-    for (let i = 0; i < included.length; i++) {
-      for (let d = 0; d < data.length; d++) {
-        if (
-          included[i].id ===
-          data[d].relationships.organizational_anchoring.data.id
-        ) {
+    includedProjects.forEach(includedProject => {
+      projects.forEach(project => {
+        const projectId = project.relationships?.organizational_anchoring?.data?.id;
+        if (includedProject.id === projectId) {
           chartDataChildren.push({
-            name: data[d].attributes.title,
+            name: project.attributes.title,
             value: 20,
           });
-          console.log(data[d].relationships.organizational_anchoring.data.id);
         }
-      }
+      });
       chartData.push({
-        name: included[i].attributes.name,
+        name: includedProject.attributes.name,
         value: 10,
         children: chartDataChildren,
       });
       chartDataChildren = [];
-    }
+    });
 
     sun.data = chartData;
 
