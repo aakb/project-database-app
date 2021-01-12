@@ -4,7 +4,6 @@ import Home from "./pages/Home";
 import Projects from "./pages/Projects";
 import Chart from "./pages/Chart";
 import { TranslatorProvider } from "react-translate";
-import AppStateContext from "./context/appStateContext";
 import common_da from "./translations/da/common.json";
 import home_da from "./translations/da/home.json";
 import projects_da from "./translations/da/projects.json";
@@ -17,9 +16,6 @@ import chart_en from "./translations/en/chart.json";
 function App() {
   // Translations
   const [language, setLanguage] = useState("da");
-  const store = {
-    language: { get: language, set: setLanguage },
-  };
   let translations;
   if (language === "en") {
     translations = {
@@ -41,15 +37,13 @@ function App() {
 
   return (
     <TranslatorProvider translations={translations}>
-      <AppStateContext.Provider value={store}>
-        <Router>
-          <Switch>
-            <Chart path="/chart" />
-            <Projects path="/projects" />
-            <Home path="/" />
-          </Switch>
-        </Router>
-      </AppStateContext.Provider>
+      <Router>
+        <Switch>
+          <Chart path="/chart" />
+          <Projects path="/projects" />
+          <Home path="/" />
+        </Switch>
+      </Router>
     </TranslatorProvider>
   );
 }
