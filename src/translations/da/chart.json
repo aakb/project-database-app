@@ -1,0 +1,7 @@
+{
+  "title": "Chart",
+  "description": "-",
+  "meta.description": "Samlet oversigt for projekter i ITK Aarhus Kommune",
+  "alert.error": "Der skete en fejl!",
+  "alert.loadingData": "Øjeblik, henter projektdata"
+}

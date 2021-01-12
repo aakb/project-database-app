@@ -1,0 +1,18 @@
+{
+  "meta.title": "Projektdatabasen",
+  "meta.description": "Samlet oversigt for projekter i ITK Aarhus Kommune",
+  "title": "Projektdatabasen",
+  "intro.h2": "ITK",
+  "intro.title": "Samlet projektoversigt ",
+  "intro.description": "Lorem ipsum dolor sit amet consect adipisicing elit. Possimus magnam voluptatum cupiditate veritatis in accusamus quisquam.",
+  "box1.title": "Bedre overblik",
+  "box1.description": "Lorem ipsum dolor sit amet consect adipisicing elit. Possimus magnam voluptatum cupiditate veritatis in accusamus quisquam.",
+  "box2.title": "Analytisk tilgang",
+  "box2.description": "Lorem ipsum dolor sit amet consect adipisicing elit. Possimus magnam voluptatum cupiditate veritatis in accusamus quisquam.",
+  "box3.title": "Dataforståelse",
+  "box3.description": "Lorem ipsum dolor sit amet consect adipisicing elit. Possimus magnam voluptatum cupiditate veritatis in accusamus quisquam.",
+  "box4.title": "Grafisk kommunikation",
+  "box4.description": "Lorem ipsum dolor sit amet consect adipisicing elit. Possimus magnam voluptatum cupiditate veritatis in accusamus quisquam.",
+  "alert.error": "Der skete en fejl!",
+  "footer.description": "Footer"
+}
