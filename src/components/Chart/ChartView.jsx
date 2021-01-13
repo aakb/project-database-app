@@ -39,7 +39,7 @@ function ChartView() {
 
   return (
     <div className="chart">
-      <header className="chart-container">
+      <div className="chart-container">
         {!appState.isLoading && !appState.error && (
           <SunburstChart
             chartId="chart"
@@ -52,7 +52,7 @@ function ChartView() {
           <FontAwesomeIcon icon={faSpinner} size="lg" spin />
         )}
         {appState.error && <Alert variant="red">{t("alert.error")}</Alert>}
-      </header>
+      </div>
     </div>
   );
 }
