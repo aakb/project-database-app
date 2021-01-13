@@ -11,9 +11,10 @@ const List = ({ jsonData }) => {
   const listData = [];
   let listDataOrganization = [];
 
-  projects.forEach(project => {
-    includedProjects.forEach(includedProject => {
-      const projectId = project.relationships?.organizational_anchoring?.data?.id;
+  projects.forEach((project) => {
+    includedProjects.forEach((includedProject) => {
+      const projectId =
+        project.relationships?.organizational_anchoring?.data?.id;
       if (projectId === includedProject.id) {
         listDataOrganization = includedProject.attributes.name;
       }
@@ -38,16 +39,13 @@ const List = ({ jsonData }) => {
             >
               {t("list.title")}
             </th>
-            <th scope="col" className="px-6 py-3 bg-gray-50">
-              <span className="sr-only">{t("list.show")}</span>
-            </th>
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
           {listData.map((item) => {
             return (
               <tr key={item.id}>
-                <td className="px-6 py-4 whitespace-nowrap">
+                <td className="px-6 py-4">
                   <div className="flex items-center">
                     <div className="flex-shrink-0 h-10 w-10">
                       <img
@@ -61,8 +59,10 @@ const List = ({ jsonData }) => {
                       />
                     </div>
                     <div className="ml-4">
-                      <div className="text-sm font-medium text-gray-900 truncate">
-                        {item.name}
+                      <div className="text-sm font-medium text-gray-900">
+                        <Link to="#" href="#" className="hover:text-indigo-600">
+                          {item.name}
+                        </Link>
                       </div>
                       {item.status && (
                         <div className="text-sm text-gray-500 truncate">
@@ -71,15 +71,6 @@ const List = ({ jsonData }) => {
                       )}
                     </div>
                   </div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                  <Link
-                    to="#"
-                    href="#"
-                    className="text-indigo-600 hover:text-indigo-900"
-                  >
-                    {t("Vis")}
-                  </Link>
                 </td>
               </tr>
             );
