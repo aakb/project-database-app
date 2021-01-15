@@ -9,8 +9,6 @@ import WithListLoading from "../components/Common/WithListLoading";
 import { useTranslate } from "react-translate";
 
 function Projects({ location }) {
-  const Data =
-    "http://project-database.local.itkdev.dk/jsonapi/node/initiative?include=organizational_anchoring";
   const t = useTranslate("projects");
 
   // Get data from API with fetch()
@@ -23,7 +21,6 @@ function Projects({ location }) {
 
   useEffect(() => {
     const dataEndpoint = `${process.env.REACT_APP_API_ENDPOINT}jsonapi/node/initiative?include=organizational_anchoring`;
-    console.log(dataEndpoint)
     setAppState({ isLoading: true, error: false });
     fetch(dataEndpoint, {
       headers: {
