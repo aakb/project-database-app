@@ -4,13 +4,13 @@ import { Helmet } from "react-helmet";
 import Header from "../components/Header/Header";
 import Main from "../components/Main/Main";
 import Alert from "../components/Alert/Alert";
-import List from "../components/Common/List";
+import List from "../components/Projects/ProjectsList";
 import WithListLoading from "../components/Common/WithListLoading";
 import { useTranslate } from "react-translate";
-const Data =
-  "http://project-database.local.itkdev.dk/jsonapi/node/initiative?include=organizational_anchoring";
 
 function Projects({ location }) {
+  const Data =
+    "http://project-database.local.itkdev.dk/jsonapi/node/initiative?include=organizational_anchoring";
   const t = useTranslate("projects");
 
   // Get data from API with fetch()

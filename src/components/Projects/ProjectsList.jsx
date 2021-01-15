@@ -61,7 +61,7 @@ const List = ({ jsonData }) => {
                     <div className="ml-4">
                       <div className="text-sm font-medium text-gray-900">
                         <Link
-                          to={"/projects/" + item.id}
+                          to={"/initiative/" + item.id}
                           className="hover:text-indigo-600"
                         >
                           {item.name}

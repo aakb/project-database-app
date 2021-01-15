@@ -25,8 +25,8 @@ function MainNav({ active }) {
   }
   const navItems = [
     { id: 1, title: t("nav.home"), path: "/" },
-    { id: 2, title: t("nav.projects"), path: "projects" },
-    { id: 3, title: t("nav.chart"), path: "chart" },
+    { id: 2, title: t("nav.projects"), path: "/projects" },
+    { id: 3, title: t("nav.chart"), path: "/chart" },
   ];
 
   return (

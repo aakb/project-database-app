@@ -16,7 +16,7 @@ import chart_en from "./translations/en/chart.json";
 
 function App() {
   // Translations
-  const [language, setLanguage] = useState("da");
+  const [language] = useState("da");
   let translations;
   if (language === "en") {
     translations = {
@@ -41,7 +41,7 @@ function App() {
       <Router>
         <Switch>
           <Chart path="/chart" />
-          <Project path="/projects/:id"></Project>
+          <Project path="/initiative/:id"></Project>
           <Projects path="/projects" />
           <Home path="/" />
         </Switch>
