@@ -22,8 +22,10 @@ function Projects({ location }) {
   });
 
   useEffect(() => {
+    const dataEndpoint = `${process.env.REACT_APP_API_ENDPOINT}jsonapi/node/initiative?include=organizational_anchoring`;
+    console.log(dataEndpoint)
     setAppState({ isLoading: true, error: false });
-    fetch(Data, {
+    fetch(dataEndpoint, {
       headers: {
         accept: "application/vnd.api+json",
       },
