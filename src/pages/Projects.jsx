@@ -7,8 +7,6 @@ import Alert from "../components/Alert/Alert";
 import List from "../components/Common/List";
 import WithListLoading from "../components/Common/WithListLoading";
 import { useTranslate } from "react-translate";
-const Data =
-  "http://project-database.local.itkdev.dk/jsonapi/node/initiative?include=organizational_anchoring";
 
 function Projects({ location }) {
   const t = useTranslate("projects");
@@ -22,8 +20,10 @@ function Projects({ location }) {
   });
 
   useEffect(() => {
+    const dataEndpoint = `${process.env.REACT_APP_API_ENDPOINT}jsonapi/node/initiative?include=organizational_anchoring`;
+    console.log(dataEndpoint)
     setAppState({ isLoading: true, error: false });
-    fetch(Data, {
+    fetch(dataEndpoint, {
       headers: {
         accept: "application/vnd.api+json",
       },
