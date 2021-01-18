@@ -8,9 +8,12 @@ import { useTranslate } from "react-translate";
 import simpleSvgPlaceholder from "@cloudfour/simple-svg-placeholder";
 import { Link } from "react-router-dom/cjs/react-router-dom.min";
 
-const DataUrl = "http://project-database.local.itkdev.dk/jsonapi/node";
-
 function Project({ location }) {
+  const dataEndpoint =
+    `${process.env.REACT_APP_API_ENDPOINT}jsonapi/node` +
+    location.pathname +
+    `?include=organizational_anchoring`;
+
   const t = useTranslate("projects");
 
   // Get data from API with fetch()
@@ -20,12 +23,9 @@ function Project({ location }) {
     jsonData: [],
   });
 
-  const dataLocation =
-    DataUrl + location.pathname + "?include=organizational_anchoring";
-
   useEffect(() => {
     setAppState({ isLoading: true, error: false });
-    fetch(dataLocation, {
+    fetch(dataEndpoint, {
       headers: {
         accept: "application/vnd.api+json",
       },
@@ -41,7 +41,7 @@ function Project({ location }) {
         setAppState({ isLoading: false, error: true });
         console.log("Error: " + error);
       });
-  }, [setAppState, dataLocation]);
+  }, [setAppState, dataEndpoint]);
 
   return (
     <Layout location={location}>
@@ -59,9 +59,9 @@ function Project({ location }) {
             <div className="bg-white shadow overflow-hidden sm:rounded-lg">
               <div className="px-4 py-5 sm:px-6">
                 <h3 className="text-lg leading-6 font-medium text-gray-900">
-                  {t("project.org")}
+                  {appState.jsonData.included[0].attributes.name}
                   <img
-                    className="h-10 w-10 rounded-full float-right"
+                    className="h-10 w-10 rounded-full float-left mr-3"
                     src={simpleSvgPlaceholder({
                       width: 100,
                       height: 100,
@@ -71,7 +71,7 @@ function Project({ location }) {
                   />
                 </h3>
                 <p className="mt-1 max-w-2xl text-sm text-gray-500">
-                  {appState.jsonData.included[0].attributes.name}
+                  {t("project.org")}
                 </p>
               </div>
               <div className="border-t border-gray-200">
