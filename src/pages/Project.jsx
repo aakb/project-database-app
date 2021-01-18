@@ -16,6 +16,22 @@ function Project({ location }) {
 
   const t = useTranslate("projects");
 
+  function mapTableData(data) {
+    let mappedArray = [];
+    let valuesToShow = ['title', 'author', 'budget', 'changed', 'status_additional', 'description'];
+    for (const [key, value] of Object.entries(data)) {
+      if (value && valuesToShow.includes(key)) {
+        let title = t(`project.${key}`)
+        if (typeof value === 'string') {
+          mappedArray.push({title: title, value: value });
+        } else {
+          mappedArray.push({ title: title, value: value.value });
+        }
+      }
+    };
+    return mappedArray;
+  }
+  
   // Get data from API with fetch()
   const [appState, setAppState] = useState({
     isLoading: true,
@@ -32,9 +48,11 @@ function Project({ location }) {
     })
       .then((res) => res.json())
       .then((data) => {
+        let tableData = mapTableData(data.data.attributes);
         setAppState({
           isLoading: false,
           jsonData: data,
+          tableData: tableData,
         });
       })
       .catch((error) => {
@@ -76,69 +94,16 @@ function Project({ location }) {
               </div>
               <div className="border-t border-gray-200">
                 <dl>
-                  {appState.jsonData.data.attributes.title && (
-                    <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                {appState.tableData.map((column, index) => (
+                    <div className={(index % 2 === 0) ? 'bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6' : 'bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6'}>
                       <dt className="text-sm font-medium text-gray-500">
-                        {t("project.name")}
+                        {column.title}
                       </dt>
                       <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                        {appState.jsonData.data.attributes.title}
+                        {column.value}
                       </dd>
                     </div>
-                  )}
-                  {appState.jsonData.data.attributes.author && (
-                    <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                      <dt className="text-sm font-medium text-gray-500">
-                        {t("project.author")}
-                      </dt>
-                      <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                        {appState.jsonData.data.attributes.author}
-                      </dd>
-                    </div>
-                  )}
-                  {appState.jsonData.data.attributes.budget && (
-                    <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                      <dt className="text-sm font-medium text-gray-500">
-                        {t("project.budget")}
-                      </dt>
-                      <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                        {appState.jsonData.data.attributes.budget}
-                      </dd>
-                    </div>
-                  )}
-                  {appState.jsonData.data.attributes.changed && (
-                    <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                      <dt className="text-sm font-medium text-gray-500">
-                        {t("project.changed")}
-                      </dt>
-                      <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                        {appState.jsonData.data.attributes.changed}
-                      </dd>
-                    </div>
-                  )}
-                  {appState.jsonData.data.attributes.status_additional && (
-                    <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                      <dt className="text-sm font-medium text-gray-500">
-                        {t("project.status_additional")}
-                      </dt>
-                      <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                        {
-                          appState.jsonData.data.attributes.status_additional
-                            .value
-                        }
-                      </dd>
-                    </div>
-                  )}
-                  {appState.jsonData.data.attributes.description && (
-                    <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                      <dt className="text-sm font-medium text-gray-500">
-                        {t("project.description")}
-                      </dt>
-                      <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                        {appState.jsonData.data.attributes.description.value}
-                      </dd>
-                    </div>
-                  )}
+                  ))}
                 </dl>
               </div>
             </div>

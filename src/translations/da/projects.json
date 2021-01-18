@@ -5,7 +5,7 @@
   "alert.error": "Der skete en fejl!",
   "alert.loadingData": "Øjeblik, henter projektdata",
   "project.org": "Organisatorisk forankring",
-  "project.name": "Navn",
+  "project.title": "Navn",
   "project.author": "Oprettet af",
   "project.budget": "Budget",
   "project.changed": "Senest ændret",
