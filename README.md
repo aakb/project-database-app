@@ -1,3 +1,94 @@
+# Project database app
+
+@todo Describe what this project is.
+
+## Deployment
+
+Build for production:
+
+```sh
+REACT_APP_API_ENDPOINT=https://project-database.example.com/ yarn build
+```
+
+If the project will not run at the root of a domain, set `PUBLIC_URL` to the
+project path, e.g.
+
+```sh
+REACT_APP_API_ENDPOINT=https://project-database.example.com/ PUBLIC_URL=/app yarn build
+```
+
+if running on `https://project-database-app.example.com/app`.
+
+Deploy the built files to the server:
+
+```sh
+rsync -az build project-database-app.example.com:/data/www/project-database-app/htdocs
+```
+
+### `nginx` configuration
+
+```nginx
+# /etc/nginx/sites-available/project-database-app
+server {
+  listen 80;
+  listen [::]:80;
+
+  server_name project-database-app.example.com;
+
+  location /.well-known/acme-challenge {
+    alias /etc/letsencrypt/webrootauth/.well-known/acme-challenge;
+  }
+
+  location / {
+    return 301 https://$host$request_uri;
+  }
+
+  access_log /data/www/project-database-app/logs/backend_access.log;
+  error_log /data/www/project-database-app/logs/backend_error.log;
+}
+
+# HTTPS server
+#
+server {
+  listen 443 ssl http2;
+  listen [::]:443 ssl http2;
+
+  server_name project-database-app.example.com;
+  root /data/www/project-database-app/htdocs;
+
+  include /etc/nginx/snippets/ssl.conf;
+  ssl_certificate /etc/letsencrypt/live/project-database-app.example.com/fullchain.pem;
+  ssl_certificate_key /etc/letsencrypt/live/project-database-app.example.com/privkey.pem;
+
+  access_log /data/www/project-database-app/logs/backend_access.log;
+  error_log /data/www/project-database-app/logs/backend_error.log;
+
+  location = /favicon.ico {
+    log_not_found off;
+    access_log off;
+  }
+
+  location = /robots.txt {
+    allow all;
+    log_not_found off;
+    access_log off;
+  }
+
+  location / {
+    try_files $uri /index.html?$query_string;
+  }
+
+  # Enable max cache time for static ressources (images)
+  location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg)$ {
+    try_files $uri @rewrite;
+    expires max;
+    log_not_found off;
+  }
+}
+```
+
+--------------------------------------------------------------------------------
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts

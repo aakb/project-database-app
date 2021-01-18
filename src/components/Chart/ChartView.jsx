@@ -6,8 +6,6 @@ import { useTranslate } from "react-translate";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 
-const Data =
-  "http://project-database.local.itkdev.dk/jsonapi/node/initiative?include=organizational_anchoring";
 
 function ChartView() {
   const t = useTranslate("chart");
@@ -18,8 +16,9 @@ function ChartView() {
   });
 
   useEffect(() => {
+    const dataEndpoint = `${process.env.REACT_APP_API_ENDPOINT}jsonapi/node/initiative?include=organizational_anchoring`;
     setAppState({ isLoading: true, error: false });
-    fetch(Data, {
+    fetch(dataEndpoint, {
       headers: {
         accept: "application/vnd.api+json",
       },
