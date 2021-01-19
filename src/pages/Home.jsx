@@ -1,6 +1,6 @@
 import React from "react";
 import Layout from "../components/Layout/Layout";
-import { Helmet } from "react-helmet";
+import { Helmet, HelmetProvider } from "react-helmet-async";
 import Header from "../components/Header/Header";
 import Main from "../components/Main/Main";
 import { useTranslate } from "react-translate";
@@ -16,18 +16,36 @@ function Home({ location }) {
   const t = useTranslate("home");
 
   const layout = [
-    { title: t("box1.title"), description: t("box1.description"), icon: box1Icon },
-    { title: t("box2.title"), description: t("box2.description"), icon: box2Icon },
-    { title: t("box3.title"), description: t("box3.description"), icon: box3Icon },
-    { title: t("box4.title"), description: t("box4.description"), icon: box4Icon }
-  ]
+    {
+      title: t("box1.title"),
+      description: t("box1.description"),
+      icon: box1Icon,
+    },
+    {
+      title: t("box2.title"),
+      description: t("box2.description"),
+      icon: box2Icon,
+    },
+    {
+      title: t("box3.title"),
+      description: t("box3.description"),
+      icon: box3Icon,
+    },
+    {
+      title: t("box4.title"),
+      description: t("box4.description"),
+      icon: box4Icon,
+    },
+  ];
 
   return (
     <Layout location={location}>
-      <Helmet>
-        <title>{t("title")}</title>
-        <meta name="description" content={t("meta.description")} />
-      </Helmet>
+      <HelmetProvider>
+        <Helmet>
+          <title>{t("title")}</title>
+          <meta name="description" content={t("meta.description")} />
+        </Helmet>
+      </HelmetProvider>
       <Header>{t("title")}</Header>
       <Main>
         <div className="py-12 bg-white">
@@ -46,11 +64,14 @@ function Home({ location }) {
 
             <div className="mt-10">
               <dl className="space-y-10 md:space-y-0 md:grid md:grid-cols-2 md:gap-x-8 md:gap-y-10">
-                {layout.map(box => (
+                {layout.map((box) => (
                   <div className="flex">
                     <div className="flex-shrink-0">
                       <div className="flex items-center justify-center h-12 w-12 rounded-md bg-indigo-500 text-white">
-                        <FontAwesomeIcon icon={box.icon} className="text-white" />
+                        <FontAwesomeIcon
+                          icon={box.icon}
+                          className="text-white"
+                        />
                       </div>
                     </div>
                     <div className="ml-4">
@@ -62,8 +83,7 @@ function Home({ location }) {
                       </dd>
                     </div>
                   </div>
-                  ))
-                }
+                ))}
               </dl>
             </div>
           </div>
