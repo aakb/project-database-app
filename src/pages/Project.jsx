@@ -15,22 +15,6 @@ function Project({ location }) {
     `?include=organizational_anchoring`;
 
   const t = useTranslate("projects");
-
-  function mapTableData(data) {
-    let mappedArray = [];
-    let valuesToShow = ['title', 'author', 'budget', 'changed', 'status_additional', 'description'];
-    for (const [key, value] of Object.entries(data)) {
-      if (value && valuesToShow.includes(key)) {
-        let title = t(`project.${key}`)
-        if (typeof value === 'string') {
-          mappedArray.push({title: title, value: value });
-        } else {
-          mappedArray.push({ title: title, value: value.value });
-        }
-      }
-    };
-    return mappedArray;
-  }
   
   // Get data from API with fetch()
   const [appState, setAppState] = useState({
@@ -40,6 +24,22 @@ function Project({ location }) {
   });
 
   useEffect(() => {
+    function mapTableData(data) {
+      let mappedArray = [];
+      let valuesToShow = ['title', 'author', 'budget', 'changed', 'status_additional', 'description'];
+      for (const [key, value] of Object.entries(data)) {
+        if (value && valuesToShow.includes(key)) {
+          let title = t(`project.${key}`)
+          if (typeof value === 'string') {
+            mappedArray.push({title: title, value: value });
+          } else {
+            mappedArray.push({ title: title, value: value.value });
+          }
+        }
+      };
+      return mappedArray;
+    }
+
     setAppState({ isLoading: true, error: false });
     fetch(dataEndpoint, {
       headers: {
@@ -59,7 +59,7 @@ function Project({ location }) {
         setAppState({ isLoading: false, error: true });
         console.log("Error: " + error);
       });
-  }, [setAppState, dataEndpoint]);
+  }, [setAppState, dataEndpoint, t]);
 
   return (
     <Layout location={location}>
@@ -95,7 +95,7 @@ function Project({ location }) {
               <div className="border-t border-gray-200">
                 <dl>
                 {appState.tableData.map((column, index) => (
-                    <div className={(index % 2 === 0) ? 'bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6' : 'bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6'}>
+                    <div key={index} className={(index % 2 === 0) ? 'bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6' : 'bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6'}>
                       <dt className="text-sm font-medium text-gray-500">
                         {column.title}
                       </dt>
