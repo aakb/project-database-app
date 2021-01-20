@@ -1,6 +1,11 @@
 # Project database app
 
-@todo Describe what this project is.
+This is a frontend to expose data from a project database.
+
+It includes
+* a frontpage to discribe the database
+* a list of projects, and project details.
+* a chart of the organizational structure.
 
 ## Deployment
 

@@ -12,9 +12,10 @@ function SunburstChart({ chartId, jsonData, categoryLabel, valueLabel }) {
 
     const chartData = [];
     let chartDataChildren = [];
-    includedProjects.forEach(includedProject => {
-      projects.forEach(project => {
-        const projectId = project.relationships?.organizational_anchoring?.data?.id;
+    includedProjects.forEach((includedProject) => {
+      projects.forEach((project) => {
+        const projectId =
+          project.relationships?.organizational_anchoring?.data?.id;
         if (includedProject.id === projectId) {
           chartDataChildren.push({
             name: project.attributes.title,
@@ -71,12 +72,12 @@ function SunburstChart({ chartId, jsonData, categoryLabel, valueLabel }) {
 
     let level1SeriesTemplate = level0SeriesTemplate.clone();
     sun.seriesTemplates.setKey("1", level1SeriesTemplate);
-    level1SeriesTemplate.fillOpacity = 0.75;
+    level1SeriesTemplate.fillOpacity = 1;
     level1SeriesTemplate.hiddenInLegend = true;
 
     let level2SeriesTemplate = level0SeriesTemplate.clone();
     sun.seriesTemplates.setKey("2", level2SeriesTemplate);
-    level2SeriesTemplate.fillOpacity = 0.5;
+    level2SeriesTemplate.fillOpacity = 1;
     level2SeriesTemplate.hiddenInLegend = true;
 
     sun.legend = new am4charts.Legend();

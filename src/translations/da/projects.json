@@ -3,5 +3,13 @@
   "description": "Samlet oversigt for projekter i ITK Aarhus Kommune",
   "meta.description": "Samlet oversigt for projekter i ITK Aarhus Kommune",
   "alert.error": "Der skete en fejl!",
-  "alert.loadingData": "Øjeblik, henter projektdata"
+  "alert.loadingData": "Øjeblik, henter projektdata",
+  "project.org": "Organisatorisk forankring",
+  "project.title": "Navn",
+  "project.author": "Oprettet af",
+  "project.budget": "Budget",
+  "project.changed": "Senest ændret",
+  "project.status_additional": "Status",
+  "project.description": "Beskrivelse",
+  "project.nav.back": "Tilbage til projektlisten"
 }

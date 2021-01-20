@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { BrowserRouter as Router, Switch } from "react-router-dom";
 import Home from "./pages/Home";
 import Projects from "./pages/Projects";
+import Project from "./pages/Project";
 import Chart from "./pages/Chart";
 import { TranslatorProvider } from "react-translate";
 import common_da from "./translations/da/common.json";
@@ -15,7 +16,7 @@ import chart_en from "./translations/en/chart.json";
 
 function App() {
   // Translations
-  const [language, setLanguage] = useState("da");
+  const [language] = useState("da");
   let translations;
   if (language === "en") {
     translations = {
@@ -40,6 +41,7 @@ function App() {
       <Router>
         <Switch>
           <Chart path="/chart" />
+          <Project path="/initiative/:id"></Project>
           <Projects path="/projects" />
           <Home path="/" />
         </Switch>
