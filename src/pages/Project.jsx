@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Layout from "../components/Layout/Layout";
-import { Helmet } from "react-helmet";
+import { Helmet, HelmetProvider } from "react-helmet-async";
 import Header from "../components/Header/Header";
 import Main from "../components/Main/Main";
 import Alert from "../components/Alert/Alert";
@@ -15,7 +15,7 @@ function Project({ location }) {
     `?include=organizational_anchoring`;
 
   const t = useTranslate("projects");
-  
+
   // Get data from API with fetch()
   const [appState, setAppState] = useState({
     isLoading: true,
@@ -26,17 +26,24 @@ function Project({ location }) {
   useEffect(() => {
     function mapTableData(data) {
       let mappedArray = [];
-      let valuesToShow = ['title', 'author', 'budget', 'changed', 'status_additional', 'description'];
+      let valuesToShow = [
+        "title",
+        "author",
+        "budget",
+        "changed",
+        "status_additional",
+        "description",
+      ];
       for (const [key, value] of Object.entries(data)) {
         if (value && valuesToShow.includes(key)) {
-          let title = t(`project.${key}`)
-          if (typeof value === 'string') {
-            mappedArray.push({title: title, value: value });
+          let title = t(`project.${key}`);
+          if (typeof value === "string") {
+            mappedArray.push({ title: title, value: value });
           } else {
             mappedArray.push({ title: title, value: value.value });
           }
         }
-      };
+      }
       return mappedArray;
     }
 
@@ -65,13 +72,15 @@ function Project({ location }) {
     <Layout location={location}>
       {!appState.isLoading && !appState.error && (
         <div>
-          <Helmet>
-            <title>{appState.jsonData.data.attributes.title}</title>
-            <meta
-              name="description"
-              content={appState.jsonData.data.attributes.title}
-            />
-          </Helmet>
+          <HelmetProvider>
+            <Helmet>
+              <title>{appState.jsonData.data.attributes.title}</title>
+              <meta
+                name="description"
+                content={appState.jsonData.data.attributes.title}
+              />
+            </Helmet>
+          </HelmetProvider>
           <Header>{appState.jsonData.data.attributes.title}</Header>
           <Main>
             <div className="bg-white shadow overflow-hidden sm:rounded-lg">
@@ -94,8 +103,15 @@ function Project({ location }) {
               </div>
               <div className="border-t border-gray-200">
                 <dl>
-                {appState.tableData.map((column, index) => (
-                    <div key={index} className={(index % 2 === 0) ? 'bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6' : 'bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6'}>
+                  {appState.tableData.map((column, index) => (
+                    <div
+                      key={index}
+                      className={
+                        index % 2 === 0
+                          ? "bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6"
+                          : "bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6"
+                      }
+                    >
                       <dt className="text-sm font-medium text-gray-500">
                         {column.title}
                       </dt>

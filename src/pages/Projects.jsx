@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Layout from "../components/Layout/Layout";
-import { Helmet } from "react-helmet";
+import { Helmet, HelmetProvider } from "react-helmet-async";
 import Header from "../components/Header/Header";
 import Main from "../components/Main/Main";
 import Alert from "../components/Alert/Alert";
@@ -42,10 +42,12 @@ function Projects({ location }) {
 
   return (
     <Layout location={location}>
-      <Helmet>
-        <title>{t("title")}</title>
-        <meta name="description" content={t("meta.description")} />
-      </Helmet>
+      <HelmetProvider>
+        <Helmet>
+          <title>{t("title")}</title>
+          <meta name="description" content={t("meta.description")} />
+        </Helmet>
+      </HelmetProvider>
       <Header>{t("title")}</Header>
       <Main>
         {!appState.isLoading && !appState.error && (
