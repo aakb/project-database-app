@@ -10,49 +10,37 @@ import { faSpinner } from '@fortawesome/free-solid-svg-icons'
 function ChartView () {
   const t = useTranslate('chart')
   const context = useContext(AppStateContext)
-  const projects = context.data.get.data
-  const organisations = context.data.get.included
+  let organisationsAndInitiatives = [...context.data.get.data, ...context.data.get.included]
   const [data, setData] = useState()
   useEffect(() => {
-    // In the following, for every organization, we find the projects
-    // and save them as children.
-    let chartData = []
-    let organisationProjectChildren = []
-    organisations.forEach((organisation) => {
-      projects.forEach((project) => {
-        const projectParentOrganisationId = project.relationships?.organizational_anchoring?.data?.id
-        if (organisation.id === projectParentOrganisationId) {
-          organisationProjectChildren.push({
-            name: project.attributes.title,
-            value: 20
-          })
-        }
-      })
-      const parentId = organisation.relationships.parent.data[0].id
-      chartData.push({
-        name: organisation.attributes.name,
-        id: organisation.id,
-        value: 10,
-        parentId: parentId,
-        children: organisationProjectChildren
-      })
-      organisationProjectChildren = []
-    })
-    // Now we identify the organisations that have parent-organisations
-    // If an organisation has a parent, we add this organisation, and its children,
-    // to the children of said parent organisation.
-    // The organisations with parents are marked for deletion.
-    chartData.forEach((chartDataProject) => {
-      if (chartDataProject.parentId !== 'virtual') {
-        chartData.find(project => project.id === chartDataProject.parentId).children.push(chartDataProject)
-        chartDataProject.delete = true
+    // Map the two types, organisation and initiative, so they are similar.
+    organisationsAndInitiatives = organisationsAndInitiatives.map(function (item) {
+      const orgId = item?.relationships?.parent?.data[0]?.id
+      const initId = item.relationships?.organizational_anchoring?.data?.id
+      const orgName = item.attributes.name
+      const initName = item.attributes.title
+      return {
+        name: orgName || initName,
+        id: item.id,
+        value: 1,
+        parentId: orgId || initId
       }
     })
-    // Now we remove the duplicates.
-    chartData = chartData.filter(function (item) {
-      return !item.delete
-    })
-    setData(chartData)
+
+    // Drupal/jsonapi: virtual
+    // https://www.drupal.org/docs/core-modules-and-themes/core-modules/jsonapi-module/core-concepts#virtual
+    // the "virtual" resource identifier identifies the <root>  taxonomy term.
+    // As such, this signals that the referencing term is at the top level of its vocabulary."
+    const nestData = (dataArray, id = 'virtual') =>
+      dataArray
+        .filter(item => item.parentId === id)
+        .map(function (organisation) {
+          const children = nestData(dataArray, organisation.id)
+          const returnObject = children.length ? { ...organisation, children: children } : { ...organisation }
+          return returnObject
+        })
+
+    setData(nestData(organisationsAndInitiatives))
   }, [])
   return (
     <div className='chart'>
