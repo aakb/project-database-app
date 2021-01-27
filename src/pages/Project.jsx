@@ -48,7 +48,7 @@ function Project ({ location }) {
     }
 
     setAppState({ isLoading: true, error: false })
-    fetch(dataEndpoint, {
+    window.fetch(dataEndpoint, {
       headers: {
         accept: 'application/vnd.api+json'
       }
