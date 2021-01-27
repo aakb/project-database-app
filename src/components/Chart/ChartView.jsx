@@ -48,7 +48,7 @@ function ChartView () {
         chartDataProject.delete = true
       }
     })
-    // Now we filter away the duplicates.
+    // Now we remove the duplicates.
     chartData = chartData.filter(function (item) {
       return !item.delete
     })
