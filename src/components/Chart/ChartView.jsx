@@ -15,7 +15,7 @@ function ChartView () {
   useEffect(() => {
     // Map the two types, organisation and initiative, so they are similar.
     organisationsAndInitiatives = organisationsAndInitiatives.map(function (item) {
-      const orgId = item?.relationships?.parent?.data[0]?.id
+      const orgId = item.relationships?.parent?.data[0]?.id
       const initId = item.relationships?.organizational_anchoring?.data?.id
       const orgName = item.attributes.name
       const initName = item.attributes.title
