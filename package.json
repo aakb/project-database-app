@@ -18,8 +18,8 @@
     "start:react": "react-scripts start",
     "prebuild": "run-s build:tailwind",
     "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "coding-standards-check": "standard webpack.config.js; cd src && standard",
+    "coding-standards-apply": "standard --fix webpack.config.js; cd src && standard --fix"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -56,6 +56,7 @@
     "react-is": "^16.13.1",
     "react-router-dom": "^5.2.0",
     "react-translate": "^7.0.1",
-    "tailwindcss": "^2.0.1"
+    "tailwindcss": "^2.0.1",
+    "standard": "^14.3.1"
   }
 }

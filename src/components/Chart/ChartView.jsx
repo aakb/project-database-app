@@ -1,59 +1,60 @@
-import React, { useState, useEffect } from "react";
-import Alert from "../Alert/Alert";
-import SunburstChart from "./SunburstChart";
-import "./ChartView.css";
-import { useTranslate } from "react-translate";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+import React, { useContext, useEffect, useState } from 'react'
+import AppStateContext from '../../context/appStateContext'
+import Alert from '../Alert/Alert'
+import SunburstChart from './SunburstChart'
+import './ChartView.css'
+import { useTranslate } from 'react-translate'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faSpinner } from '@fortawesome/free-solid-svg-icons'
 
-
-function ChartView() {
-  const t = useTranslate("chart");
-  const [appState, setAppState] = useState({
-    isLoading: true,
-    error: false,
-    jsonData: [],
-  });
-
+function ChartView () {
+  const t = useTranslate('chart')
+  const context = useContext(AppStateContext)
+  let organisationsAndInitiatives = [...context.data.get.data, ...context.data.get.included]
+  const [data, setData] = useState()
   useEffect(() => {
-    const dataEndpoint = `${process.env.REACT_APP_API_ENDPOINT}jsonapi/node/initiative?include=organizational_anchoring`;
-    setAppState({ isLoading: true, error: false });
-    fetch(dataEndpoint, {
-      headers: {
-        accept: "application/vnd.api+json",
-      },
+    // Map the two types, organisation and initiative, so they are similar.
+    organisationsAndInitiatives = organisationsAndInitiatives.map(function (item) {
+      const orgId = item.relationships?.parent?.data[0]?.id
+      const initId = item.relationships?.organizational_anchoring?.data?.id
+      const orgName = item.attributes.name
+      const initName = item.attributes.title
+      return {
+        name: orgName || initName,
+        id: item.id,
+        value: 1,
+        parentId: orgId || initId
+      }
     })
-      .then((res) => res.json())
-      .then((data) => {
-        setAppState({
-          isLoading: false,
-          jsonData: data,
-        });
-      })
-      .catch((error) => {
-        setAppState({ isLoading: false, error: true });
-        console.log("Error: " + error);
-      });
-  }, [setAppState]);
 
+    // Drupal/jsonapi: virtual
+    // https://www.drupal.org/docs/core-modules-and-themes/core-modules/jsonapi-module/core-concepts#virtual
+    // the "virtual" resource identifier identifies the <root>  taxonomy term.
+    // As such, this signals that the referencing term is at the top level of its vocabulary."
+    const nestData = (dataArray, id = 'virtual') =>
+      dataArray
+        .filter(item => item.parentId === id)
+        .map(function (organisation) {
+          const children = nestData(dataArray, organisation.id)
+          const returnObject = children.length ? { ...organisation, children: children } : { ...organisation }
+          return returnObject
+        })
+
+    setData(nestData(organisationsAndInitiatives))
+  }, [])
   return (
-    <div className="chart">
-      <div className="chart-container">
-        {!appState.isLoading && !appState.error && (
-          <SunburstChart
-            chartId="chart"
-            jsonData={appState.jsonData}
-            categoryLabel="item"
-            valueLabel="count"
-          />
+    <div className='chart'>
+      <div className='chart-container'>
+        {!context.isLoading.get && !context.hasError.get && data && (
+          <SunburstChart data={data} />
         )}
-        {appState.isLoading && (
-          <FontAwesomeIcon icon={faSpinner} size="lg" spin />
+        {context.isLoading.get && (
+          <FontAwesomeIcon icon={faSpinner} size='lg' spin />
         )}
-        {appState.error && <Alert variant="red">{t("alert.error")}</Alert>}
+        {context.hasError.get && <Alert variant='red'>{t('alert.error')}</Alert>}
       </div>
     </div>
-  );
+  )
 }
 
-export default ChartView;
+export default ChartView

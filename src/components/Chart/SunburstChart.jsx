@@ -1,95 +1,148 @@
-import React, { useRef, useEffect } from "react";
-import * as am4core from "@amcharts/amcharts4/core";
-import * as am4charts from "@amcharts/amcharts4/charts";
-import * as am4plugins_sunburst from "@amcharts/amcharts4/plugins/sunburst";
+import React, { useRef, useEffect } from 'react'
+import * as am4core from '@amcharts/amcharts4/core'
+import * as am4charts from '@amcharts/amcharts4/charts'
+import * as am4plugins_sunburst from '@amcharts/amcharts4/plugins/sunburst' // eslint-disable-line
 
-function SunburstChart({ chartId, jsonData, categoryLabel, valueLabel }) {
-  const chart = useRef(null);
+function SunburstChart ({ data }) {
+  let currentlySelected
+
+  const chartId = 'chart'
+  const chart = useRef(null)
+  const sun = am4core.create(chartId, am4plugins_sunburst.Sunburst)
+  const zoomOutButton = sun.seriesContainer.createChild(am4core.ZoomOutButton)
+
+  const find = (searchData, target) => (target || []).reduce(
+    (acc, obj) => acc.concat(obj.name === searchData ? obj : [],
+      find(searchData, obj.children)),
+    []
+  )
+  const findById = (searchData, target) => (target || []).reduce(
+    (acc, obj) => acc.concat(obj.id === searchData ? obj : [],
+      findById(searchData, obj.children)),
+    []
+  )
+
+  function pickSlice (event) {
+    if (event.target.dataItem.sunburstDataItem.children) {
+      zoomOutButton.show()
+      currentlySelected = event.target.dataItem.sunburstDataItem.properties.name
+      console.log(currentlySelected)
+      const result = find(event.target.dataItem.sunburstDataItem.properties.name, data)
+      sun.data = result
+    }
+  }
+
+  function hasParent (node) {
+    return node[0].parentId !== 'virtual'
+  }
+
+  function reset () {
+    currentlySelected = ''
+    zoomOutButton.hide()
+    sun.data = data
+  }
+
+  function zoomOut () {
+    const result = find(currentlySelected, data)
+    let resultData
+    if (hasParent(result)) {
+      resultData = findById(result[0].parentId, data)
+      currentlySelected = resultData[0].name
+      sun.data = resultData
+      if (!hasParent(result)) {
+        reset()
+      }
+    } else {
+      reset()
+    }
+  }
 
   useEffect(() => {
-    const { data: projects, included: includedProjects } = jsonData;
-    let sun = am4core.create(chartId, am4plugins_sunburst.Sunburst);
+    sun.data = data
 
-    const chartData = [];
-    let chartDataChildren = [];
-    includedProjects.forEach((includedProject) => {
-      projects.forEach((project) => {
-        const projectId =
-          project.relationships?.organizational_anchoring?.data?.id;
-        if (includedProject.id === projectId) {
-          chartDataChildren.push({
-            name: project.attributes.title,
-            value: 20,
-          });
-        }
-      });
-      chartData.push({
-        name: includedProject.attributes.name,
-        value: 10,
-        children: chartDataChildren,
-      });
-      chartDataChildren = [];
-    });
+    sun.padding(0, 0, 0, 0)
+    sun.radius = am4core.percent(98)
 
-    sun.data = chartData;
-
-    sun.padding(0, 0, 0, 0);
-    sun.radius = am4core.percent(98);
-
-    sun.colors.step = 2;
-    sun.fontSize = 11;
-    sun.innerRadius = am4core.percent(10);
+    sun.fontSize = 11
+    sun.innerRadius = am4core.percent(10)
 
     // define data fields
-    sun.dataFields.value = "value";
-    sun.dataFields.name = "name";
-    sun.dataFields.children = "children";
+    sun.dataFields.value = 'value'
+    sun.dataFields.name = 'name'
+    sun.dataFields.children = 'children'
 
-    let level0SeriesTemplate = new am4plugins_sunburst.SunburstSeries();
-    level0SeriesTemplate.hiddenInLegend = false;
-    sun.seriesTemplates.setKey("0", level0SeriesTemplate);
+    // Thanks to https://colorbrewer2.org/ for creating a
+    // colorblind-friendly palette.
+    sun.colors.list = [
+      am4core.color('#a50026'),
+      am4core.color('#313695'),
+      am4core.color('#4575b4'),
+      am4core.color('#fdae61'),
+      am4core.color('#fee090'),
+      am4core.color('#e0f3f8'),
+      am4core.color('#abd9e9'),
+      am4core.color('#74add1'),
+      am4core.color('#f46d43'),
+      am4core.color('#d73027')
+    ]
+    const level0SeriesTemplate = new am4plugins_sunburst.SunburstSeries()
+    level0SeriesTemplate.hiddenInLegend = false
+    sun.seriesTemplates.setKey('0', level0SeriesTemplate)
+    zoomOutButton.visible = false
+    zoomOutButton.horizontalCenter = 'middle'
+    zoomOutButton.verticalCenter = 'middle'
+    zoomOutButton.events.on('hit', function () {
+      zoomOut()
+    })
 
     // this makes labels to be hidden if they don't fit
-    level0SeriesTemplate.labels.template.truncate = true;
-    level0SeriesTemplate.labels.template.hideOversized = true;
-
+    level0SeriesTemplate.labels.template.truncate = true
+    level0SeriesTemplate.labels.template.hideOversized = true
     level0SeriesTemplate.labels.template.adapter.add(
-      "rotation",
+      'rotation',
       function (rotation, target) {
         target.maxWidth =
-          target.dataItem.slice.radius - target.dataItem.slice.innerRadius - 10;
+          target.dataItem.slice.radius - target.dataItem.slice.innerRadius - 10
         target.maxHeight = Math.abs(
           ((target.dataItem.slice.arc *
             (target.dataItem.slice.innerRadius +
               target.dataItem.slice.radius)) /
             2) *
             am4core.math.RADIANS
-        );
+        )
 
-        return rotation;
+        return rotation
       }
-    );
+    )
 
-    let level1SeriesTemplate = level0SeriesTemplate.clone();
-    sun.seriesTemplates.setKey("1", level1SeriesTemplate);
-    level1SeriesTemplate.fillOpacity = 1;
-    level1SeriesTemplate.hiddenInLegend = true;
+    level0SeriesTemplate.slices.template.events.on('hit', function (event) {
+      pickSlice(event)
+    })
 
-    let level2SeriesTemplate = level0SeriesTemplate.clone();
-    sun.seriesTemplates.setKey("2", level2SeriesTemplate);
-    level2SeriesTemplate.fillOpacity = 1;
-    level2SeriesTemplate.hiddenInLegend = true;
+    const level1SeriesTemplate = level0SeriesTemplate.clone()
+    sun.seriesTemplates.setKey('1', level1SeriesTemplate)
+    level1SeriesTemplate.fillOpacity = 1
+    level1SeriesTemplate.hiddenInLegend = true
 
-    sun.legend = new am4charts.Legend();
+    const level2SeriesTemplate = level0SeriesTemplate.clone()
+    sun.seriesTemplates.setKey('2', level2SeriesTemplate)
+    level2SeriesTemplate.fillOpacity = 1
+    level2SeriesTemplate.hiddenInLegend = true
 
-    sun.current = chart;
+    const level3SeriesTemplate = level0SeriesTemplate.clone()
+    sun.seriesTemplates.setKey('3', level3SeriesTemplate)
+    level3SeriesTemplate.fillOpacity = 1
+    level3SeriesTemplate.hiddenInLegend = true
+
+    sun.legend = new am4charts.Legend()
+    sun.current = chart
 
     return () => {
-      sun.dispose();
-    };
-  }, [chartId, jsonData, categoryLabel, valueLabel]);
+      sun.dispose()
+    }
+  }, [])
 
-  return <div id={chartId} className="graph" />;
+  return <div id={chartId} className='graph' />
 }
 
-export default SunburstChart;
+export default SunburstChart
