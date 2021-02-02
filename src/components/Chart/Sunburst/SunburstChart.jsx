@@ -147,8 +147,6 @@ function SunburstChart ({ data }) {
     sun.legend.position = 'right'
     sun.legend.valign = 'top'
 
-    // sun.align = "center"
-    // sun.align = "top"
     chart.current = sun
     return () => {
       sun.dispose()
