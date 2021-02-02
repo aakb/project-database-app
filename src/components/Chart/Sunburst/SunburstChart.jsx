@@ -4,60 +4,60 @@ import * as am4charts from '@amcharts/amcharts4/charts'
 import * as am4plugins_sunburst from '@amcharts/amcharts4/plugins/sunburst' // eslint-disable-line
 
 function SunburstChart ({ data }) {
-  let currentlySelected
-
-  const chartId = 'chart'
   const chart = useRef(null)
-  const sun = am4core.create(chartId, am4plugins_sunburst.Sunburst)
-  const zoomOutButton = sun.seriesContainer.createChild(am4core.ZoomOutButton)
-
-  const find = (searchData, target) => (target || []).reduce(
-    (acc, obj) => acc.concat(obj.name === searchData ? obj : [],
-      find(searchData, obj.children)),
-    []
-  )
-  const findById = (searchData, target) => (target || []).reduce(
-    (acc, obj) => acc.concat(obj.id === searchData ? obj : [],
-      findById(searchData, obj.children)),
-    []
-  )
-
-  function pickSlice (event) {
-    if (event.target.dataItem.sunburstDataItem.children) {
-      zoomOutButton.show()
-      currentlySelected = event.target.dataItem.sunburstDataItem.properties.name
-      console.log(currentlySelected)
-      const result = find(event.target.dataItem.sunburstDataItem.properties.name, data)
-      sun.data = result
-    }
-  }
-
-  function hasParent (node) {
-    return node[0].parentId !== 'virtual'
-  }
-
-  function reset () {
-    currentlySelected = ''
-    zoomOutButton.hide()
-    sun.data = data
-  }
-
-  function zoomOut () {
-    const result = find(currentlySelected, data)
-    let resultData
-    if (hasParent(result)) {
-      resultData = findById(result[0].parentId, data)
-      currentlySelected = resultData[0].name
-      sun.data = resultData
-      if (!hasParent(result)) {
-        reset()
-      }
-    } else {
-      reset()
-    }
-  }
+  const chartId = 'chart'
 
   useEffect(() => {
+    let currentlySelected
+
+    const find = (searchData, target) => (target || []).reduce(
+      (acc, obj) => acc.concat(obj.name === searchData ? obj : [],
+        find(searchData, obj.children)),
+      []
+    )
+    const findById = (searchData, target) => (target || []).reduce(
+      (acc, obj) => acc.concat(obj.id === searchData ? obj : [],
+        findById(searchData, obj.children)),
+      []
+    )
+
+    function pickSlice (event) {
+      if (event.target.dataItem.sunburstDataItem.children) {
+        zoomOutButton.show()
+        currentlySelected = event.target.dataItem.sunburstDataItem.properties.name
+        console.log(currentlySelected)
+        const result = find(event.target.dataItem.sunburstDataItem.properties.name, data)
+        sun.data = result
+      }
+    }
+
+    function hasParent (node) {
+      return node[0].parentId !== 'virtual'
+    }
+
+    function reset () {
+      currentlySelected = ''
+      zoomOutButton.hide()
+      sun.data = data
+    }
+
+    function zoomOut () {
+      const result = find(currentlySelected, data)
+      let resultData
+      if (hasParent(result)) {
+        resultData = findById(result[0].parentId, data)
+        currentlySelected = resultData[0].name
+        sun.data = resultData
+        if (!hasParent(result)) {
+          reset()
+        }
+      } else {
+        reset()
+      }
+    }
+    const sun = am4core.create(chartId, am4plugins_sunburst.Sunburst)
+    const zoomOutButton = sun.seriesContainer.createChild(am4core.ZoomOutButton)
+
     sun.data = data
 
     sun.padding(0, 0, 0, 0)
@@ -74,21 +74,27 @@ function SunburstChart ({ data }) {
     // Thanks to https://colorbrewer2.org/ for creating a
     // colorblind-friendly palette.
     sun.colors.list = [
-      am4core.color('#a50026'),
-      am4core.color('#313695'),
-      am4core.color('#4575b4'),
+      am4core.color('#d73027'),
+      am4core.color('#f46d43'),
       am4core.color('#fdae61'),
       am4core.color('#fee090'),
+      am4core.color('#ffffbf'),
       am4core.color('#e0f3f8'),
       am4core.color('#abd9e9'),
       am4core.color('#74add1'),
-      am4core.color('#f46d43'),
-      am4core.color('#d73027')
+      am4core.color('#4575b4'),
+      am4core.color('#313695')
     ]
+
     const level0SeriesTemplate = new am4plugins_sunburst.SunburstSeries()
     level0SeriesTemplate.hiddenInLegend = false
     sun.seriesTemplates.setKey('0', level0SeriesTemplate)
     zoomOutButton.visible = false
+    zoomOutButton.background.fill = am4core.color('#000')
+    zoomOutButton.icon.stroke = am4core.color('#fff')
+    zoomOutButton.background.states.getKey('hover').properties.fill = am4core.color('#676767')
+    zoomOutButton.background.states.getKey('down').properties.fill = am4core.color('#d3d3d3')
+    zoomOutButton.icon.strokeWidth = 2
     zoomOutButton.horizontalCenter = 'middle'
     zoomOutButton.verticalCenter = 'middle'
     zoomOutButton.events.on('hit', function () {
@@ -97,6 +103,7 @@ function SunburstChart ({ data }) {
 
     // this makes labels to be hidden if they don't fit
     level0SeriesTemplate.labels.template.truncate = true
+    level0SeriesTemplate.labels.template.fill = am4core.color('#000')
     level0SeriesTemplate.labels.template.hideOversized = true
     level0SeriesTemplate.labels.template.adapter.add(
       'rotation',
@@ -133,14 +140,20 @@ function SunburstChart ({ data }) {
     sun.seriesTemplates.setKey('3', level3SeriesTemplate)
     level3SeriesTemplate.fillOpacity = 1
     level3SeriesTemplate.hiddenInLegend = true
-
     sun.legend = new am4charts.Legend()
-    sun.current = chart
+    sun.legend.maxHeight = 700
+    sun.legend.scrollable = true
+    sun.legend.truncate = true
+    sun.legend.position = 'right'
+    sun.legend.valign = 'top'
 
+    // sun.align = "center"
+    // sun.align = "top"
+    chart.current = sun
     return () => {
       sun.dispose()
     }
-  }, [])
+  }, [data])
 
   return <div id={chartId} className='graph' />
 }
