@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import AppStateContext from '../../../context/appStateContext'
 import Alert from '../../Alert/Alert'
 import SunburstChart from './SunburstChart'
-import Select from '../../Common/Select'
+import Dropdown from '../../Common/Dropdown'
 import './ChartView.css'
 
 import { useTranslate } from 'react-translate'
@@ -39,7 +39,7 @@ function SunburstChartView () {
 
   return (
     <>
-      <Select
+      <Dropdown
         name='databasis'
         label={sortBy.name}
         options={options}

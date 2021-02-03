@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Transition } from '@tailwindui/react'
 
-function Select ({ name, label, options, onOptionSelect }) {
+function Dropdown ({ name, label, options, onOptionSelect }) {
   const [show, setShow] = useState(false)
 
   function closeDialogAndCallback (option) {
@@ -41,4 +41,4 @@ function Select ({ name, label, options, onOptionSelect }) {
   )
 };
 
-export default Select
+export default Dropdown
