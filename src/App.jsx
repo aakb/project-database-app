@@ -27,7 +27,7 @@ function App () {
   }
 
   useEffect(() => {
-    const dataEndpoint = `${process.env.REACT_APP_API_ENDPOINT}jsonapi/node/initiative?include=organizational_anchoring`
+    const dataEndpoint = `${process.env.REACT_APP_API_ENDPOINT}jsonapi/node/initiative?include=organizational_anchoring,status,stakeholder,strategy`
     setIsLoading(true)
     setHasError(false)
     window.fetch(dataEndpoint, {

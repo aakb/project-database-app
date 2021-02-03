@@ -3,7 +3,7 @@ import Layout from '../components/Layout/Layout'
 import { Helmet, HelmetProvider } from 'react-helmet-async'
 import Header from '../components/Header/Header'
 import Main from '../components/Main/Main'
-import ChartView from '../components/Chart/ChartView'
+import SunburstChartView from '../components/Chart/Sunburst/SunburstChartView'
 import { useTranslate } from 'react-translate'
 import AppStateContext from '../context/appStateContext'
 
@@ -21,7 +21,7 @@ function Projects ({ location }) {
       <Header>{t('title')}</Header>
       <Main>
         {!context.isLoading.get && !context.hasError.get && context.data.get && (
-          <ChartView />
+          <SunburstChartView />
         )}
 
       </Main>
