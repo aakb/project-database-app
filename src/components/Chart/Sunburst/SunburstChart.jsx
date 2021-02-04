@@ -99,11 +99,11 @@ function SunburstChart ({ data }) {
     zoomOutButton.events.on('hit', function () {
       zoomOut()
     })
-  
-    level0SeriesTemplate.slices.template.tooltipText = "{name} ({value}): {description}"
-    level0SeriesTemplate.tooltip.label.wrap = true;
-    level0SeriesTemplate.tooltip.label.maxWidth = 550;
-    level0SeriesTemplate.tooltip.label.fontSize = 17;
+
+    level0SeriesTemplate.slices.template.tooltipText = '{name} ({value}): {description}'
+    level0SeriesTemplate.tooltip.label.wrap = true
+    level0SeriesTemplate.tooltip.label.maxWidth = 550
+    level0SeriesTemplate.tooltip.label.fontSize = 17
 
     // this makes labels to be hidden if they don't fit
     level0SeriesTemplate.labels.template.truncate = true
@@ -150,7 +150,7 @@ function SunburstChart ({ data }) {
     sun.legend.truncate = true
     sun.legend.position = 'right'
     sun.legend.valign = 'top'
-    
+
     chart.current = sun
     return () => {
       sun.dispose()

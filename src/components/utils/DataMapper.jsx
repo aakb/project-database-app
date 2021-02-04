@@ -15,7 +15,7 @@ function mapData (data, key) {
       name: name,
       id: item.id,
       value: 1, // Because the leaves should be weighted equally
-      parentId: relationshipId || initId,
+      parentId: relationshipId || initId
     }
   })
   return nestData(data)

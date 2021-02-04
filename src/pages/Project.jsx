@@ -37,7 +37,7 @@ function Project ({ location }) {
       ]
       for (let [key, value] of Object.entries(data)) {
         if (value && valuesToShow.includes(key)) {
-          value = key === 'changed'  ? format(new Date(value), "do MMMM yyyy", {locale: da}) : value
+          value = key === 'changed' ? format(new Date(value), 'do MMMM yyyy', { locale: da }) : value
           const title = t(`project.${key}`)
           if (typeof value === 'string') {
             mappedArray.push({ title: title, value: value })
