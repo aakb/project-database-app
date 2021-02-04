@@ -25,7 +25,6 @@ function SunburstChart ({ data }) {
       if (event.target.dataItem.sunburstDataItem.children) {
         zoomOutButton.show()
         currentlySelected = event.target.dataItem.sunburstDataItem.properties.name
-        console.log(currentlySelected)
         const result = find(event.target.dataItem.sunburstDataItem.properties.name, data)
         sun.data = result
       }
@@ -100,6 +99,11 @@ function SunburstChart ({ data }) {
     zoomOutButton.events.on('hit', function () {
       zoomOut()
     })
+
+    level0SeriesTemplate.slices.template.tooltipText = '{name} ({value}): {description}'
+    level0SeriesTemplate.tooltip.label.wrap = true
+    level0SeriesTemplate.tooltip.label.maxWidth = 550
+    level0SeriesTemplate.tooltip.label.fontSize = 17
 
     // this makes labels to be hidden if they don't fit
     level0SeriesTemplate.labels.template.truncate = true

@@ -6,7 +6,7 @@ import Dropdown from '../../Common/Dropdown'
 import './ChartView.css'
 
 import { useTranslate } from 'react-translate'
-import { mapSunburstData } from '../../utils/DataMapping'
+import { mapSunburstData } from '../../utils/DataMapper'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSpinner } from '@fortawesome/free-solid-svg-icons'
 function SunburstChartView () {

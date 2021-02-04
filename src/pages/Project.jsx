@@ -7,7 +7,8 @@ import Alert from '../components/Alert/Alert'
 import { useTranslate } from 'react-translate'
 import simpleSvgPlaceholder from '@cloudfour/simple-svg-placeholder'
 import { Link } from 'react-router-dom/cjs/react-router-dom.min'
-
+import { format } from 'date-fns'
+import { da } from 'date-fns/locale'
 function Project ({ location }) {
   const dataEndpoint =
     `${process.env.REACT_APP_API_ENDPOINT}jsonapi/node` +
@@ -34,8 +35,9 @@ function Project ({ location }) {
         'status_additional',
         'description'
       ]
-      for (const [key, value] of Object.entries(data)) {
+      for (let [key, value] of Object.entries(data)) {
         if (value && valuesToShow.includes(key)) {
+          value = key === 'changed' ? format(new Date(value), 'do MMMM yyyy', { locale: da }) : value
           const title = t(`project.${key}`)
           if (typeof value === 'string') {
             mappedArray.push({ title: title, value: value })

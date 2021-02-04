@@ -9,7 +9,9 @@ function mapData (data, key) {
     const initId = Array.isArray(item.relationships[key]?.data) ? item.relationships[key]?.data.map(item => item.id) : item.relationships[key]?.data?.id
     const name = item.attributes.title || item.attributes.name
     const relationshipId = item.relationships?.parent?.data[0]?.id
+    const description = item.attributes?.description?.value
     return {
+      description: description,
       name: name,
       id: item.id,
       value: 1, // Because the leaves should be weighted equally
