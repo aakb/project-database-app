@@ -4,9 +4,8 @@ import Alert from '../../Alert/Alert'
 import SunburstChart from './SunburstChart'
 import Dropdown from '../../Common/Dropdown'
 import './ChartView.css'
-
 import { useTranslate } from 'react-translate'
-import { mapSunburstData } from '../../utils/DataMapper'
+import { mapSunburstData } from '../../utils/SunburstMapper'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSpinner } from '@fortawesome/free-solid-svg-icons'
 function SunburstChartView () {

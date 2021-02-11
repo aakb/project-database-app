@@ -4,7 +4,7 @@ import Alert from '../../Alert/Alert'
 import GanttChart from './GanttChart'
 import './GanttChartView.css'
 import { useTranslate } from 'react-translate'
-import { mapGanttData, getEndDateForXAxis } from '../../utils/DataMapper'
+import { mapGanttData, getEndDateForXAxis } from '../../utils/GanttMapper'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSpinner } from '@fortawesome/free-solid-svg-icons'
 function GanttChartView () {
