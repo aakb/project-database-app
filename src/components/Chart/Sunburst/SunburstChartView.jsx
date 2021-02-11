@@ -33,17 +33,18 @@ function SunburstChartView () {
     setData(mapSunburstData(organisationsAndInitiatives, sortBy.id))
   }, [sortBy])
 
-  function sortData (input) {
-    setSortBy(input)
+  function sortData ({ target }) {
+    setSortBy(options.find(option => option.id === target.value))
   }
 
   return (
     <>
       <Dropdown
         name='databasis'
-        label={sortBy.name}
+        chosen={sortBy.name}
+        label={t('data basis')}
         options={options}
-        onOptionSelect={sortData}
+        onChange={sortData}
       />
       <div className='chart'>
         <div className='chart-container'>
