@@ -2,7 +2,7 @@
   "title": "Chart",
   "description": "-",
   "meta.description": "Samlet oversigt for projekter i ITK Aarhus Kommune",
-  "display settings": "Indstillinger for visning",
+  "display settings": "Indstil visning",
   "alert.error": "Der skete en fejl!",
   "alert.loadingData": "Øjeblik, henter projektdata",
   "option.organizational_anchoring": "Organisatorisk forankring",

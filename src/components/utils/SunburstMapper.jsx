@@ -3,7 +3,6 @@ export function mapSunburstData (data, key) {
   return mapDataForSunburst(initiativeTypeAndInitiative, key)
 }
 
-
 function mapDataForSunburst (data, key) {
   // Map the two types, "key" and initiative, so they are similar.
   data = data.map(function (item) {

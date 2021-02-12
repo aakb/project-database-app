@@ -17,7 +17,7 @@ function GanttChartView () {
 
   return (
     <>
-      <div className='chart'>
+      <div className='chart mt-3'>
         <div className='chart-container'>
           {!context.isLoading.get && !context.hasError.get && data && (
             <GanttChart data={data} endDateForXAxis={endDateForXAxis} />
@@ -25,7 +25,9 @@ function GanttChartView () {
           {context.isLoading.get && (
             <FontAwesomeIcon icon={faSpinner} size='lg' spin />
           )}
-          {context.hasError.get && <Alert variant='red'>{t('alert.error')}</Alert>}
+          {context.hasError.get && (
+            <Alert variant='red'>{t('alert.error')}</Alert>
+          )}
         </div>
       </div>
     </>
