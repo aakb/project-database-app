@@ -11,17 +11,20 @@ import Dropdown from '../components/Common/Dropdown'
 function Projects ({ location }) {
   const t = useTranslate('chart')
   const context = useContext(AppStateContext)
-  const options = [{
-    name: t('option.sunburst'),
-    id: 'sunburst'
-  }, {
-    name: t('option.gantt'),
-    id: 'gantt'
-  }]
+  const options = [
+    {
+      name: t('option.sunburst'),
+      id: 'sunburst'
+    },
+    {
+      name: t('option.gantt'),
+      id: 'gantt'
+    }
+  ]
   const [graphType, setGraphType] = useState(options[0])
 
   function setType ({ target }) {
-    setGraphType(options.find(option => option.id === target.value))
+    setGraphType(options.find((option) => option.id === target.value))
   }
 
   return (
@@ -34,8 +37,10 @@ function Projects ({ location }) {
       </HelmetProvider>
       <Header>{t('title')}</Header>
       <Main>
-        <h2 className='text-2xl font-bold leading-tight text-gray-900 py-4'>{t('display settings')}</h2>
-        <span className='pr-8'>
+        <legend className='font-bold leading-tight text-gray-900 mb-4'>
+          {t('display settings')}
+        </legend>
+        <span className='mr-4'>
           <Dropdown
             name='graph'
             label={t('graph type')}
@@ -44,13 +49,14 @@ function Projects ({ location }) {
             onChange={setType}
           />
         </span>
-        {!context.isLoading.get && !context.hasError.get && context.data.get && graphType.id === 'gantt' && (
-          <GanttChartView />
-        )}
-        {!context.isLoading.get && !context.hasError.get && context.data.get && graphType.id === 'sunburst' && (
-          <SunburstChartView />
-        )}
-
+        {!context.isLoading.get &&
+          !context.hasError.get &&
+          context.data.get &&
+          graphType.id === 'gantt' && <GanttChartView />}
+        {!context.isLoading.get &&
+          !context.hasError.get &&
+          context.data.get &&
+          graphType.id === 'sunburst' && <SunburstChartView />}
       </Main>
     </Layout>
   )

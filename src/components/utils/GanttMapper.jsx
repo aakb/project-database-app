@@ -1,5 +1,4 @@
 
-
 export function mapGanttData (data) {
   const initiativeTypeAndInitiative = data.filter(item => item.type === 'node--initiative' && item.attributes.time_period)
   return mapDataForGantt(initiativeTypeAndInitiative)
