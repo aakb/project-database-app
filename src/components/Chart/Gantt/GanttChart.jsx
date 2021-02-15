@@ -10,6 +10,9 @@ function SunburstChart ({ data, endDateForXAxis }) {
     const colorSet = new am4core.ColorSet()
     // Add theme colors
     data = data.map(function (item, index) {
+      // There are 10 colors in the theme, so 
+      // if the index exceeds 9, the last int in
+      // the number is used
       const number = index > 9 ? index.toString().substr(-1) : index
       return {
         ...item,
