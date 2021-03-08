@@ -13,7 +13,7 @@ function SunburstChart ({ data, endDateForXAxis }) {
       // There are 10 colors in the theme, so 
       // if the index exceeds 9, the last int in
       // the number is used
-      const number = index > 9 ? index.toString().substr(-1) : index
+      const number = index > 9 ? index % 10 : index
       return {
         ...item,
         color: colorSet.getIndex(number),
