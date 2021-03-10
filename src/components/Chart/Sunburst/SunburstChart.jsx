@@ -2,11 +2,12 @@ import React, { useRef, useEffect } from 'react'
 import * as am4core from '@amcharts/amcharts4/core'
 import * as am4charts from '@amcharts/amcharts4/charts'
 import * as am4plugins_sunburst from '@amcharts/amcharts4/plugins/sunburst' // eslint-disable-line
+import { Am4ThemesColorTheme } from '../../utils/Colors'
 
 function SunburstChart ({ data }) {
   const chart = useRef(null)
   const chartId = 'chart'
-
+  am4core.useTheme(Am4ThemesColorTheme)
   useEffect(() => {
     let currentlySelected
 
@@ -69,21 +70,6 @@ function SunburstChart ({ data }) {
     sun.dataFields.value = 'value'
     sun.dataFields.name = 'name'
     sun.dataFields.children = 'children'
-
-    // Thanks to https://colorbrewer2.org/ for creating a
-    // colorblind-friendly palette.
-    sun.colors.list = [
-      am4core.color('#d73027'),
-      am4core.color('#f46d43'),
-      am4core.color('#fdae61'),
-      am4core.color('#fee090'),
-      am4core.color('#ffffbf'),
-      am4core.color('#e0f3f8'),
-      am4core.color('#abd9e9'),
-      am4core.color('#74add1'),
-      am4core.color('#4575b4'),
-      am4core.color('#313695')
-    ]
 
     const level0SeriesTemplate = new am4plugins_sunburst.SunburstSeries()
     level0SeriesTemplate.hiddenInLegend = false

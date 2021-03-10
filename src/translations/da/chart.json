@@ -2,10 +2,15 @@
   "title": "Chart",
   "description": "-",
   "meta.description": "Samlet oversigt for projekter i ITK Aarhus Kommune",
+  "display settings": "Indstil visning",
   "alert.error": "Der skete en fejl!",
   "alert.loadingData": "Øjeblik, henter projektdata",
   "option.organizational_anchoring": "Organisatorisk forankring",
   "option.status": "Status",
   "option.stakeholders": "Samarbejdspartnere",
-  "option.strategy": "Strategi"
+  "option.strategy": "Strategi",
+  "option.sunburst": "Sunburst",
+  "option.gantt": "Gantt",
+  "graph type": "Graftype",
+  "data basis": "Datagrundlag"
 }

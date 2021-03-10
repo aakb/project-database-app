@@ -1,9 +1,9 @@
 export function mapSunburstData (data, key) {
   const initiativeTypeAndInitiative = data.filter(item => item.type === 'node--initiative' || item.type === `taxonomy_term--${key}`)
-  return mapData(initiativeTypeAndInitiative, key)
+  return mapDataForSunburst(initiativeTypeAndInitiative, key)
 }
 
-function mapData (data, key) {
+function mapDataForSunburst (data, key) {
   // Map the two types, "key" and initiative, so they are similar.
   data = data.map(function (item) {
     const initId = Array.isArray(item.relationships[key]?.data) ? item.relationships[key]?.data.map(item => item.id) : item.relationships[key]?.data?.id
