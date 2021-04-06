@@ -28,6 +28,9 @@ function SunburstChart ({ data }) {
         currentlySelected = event.target.dataItem.sunburstDataItem.properties.name
         const result = find(event.target.dataItem.sunburstDataItem.properties.name, data)
         sun.data = result
+      } else {
+        const result = find(event.target.dataItem.sunburstDataItem.properties.name, data)
+        window.location.pathname = `/initiative/${result[0].id}`;
       }
     }
 
